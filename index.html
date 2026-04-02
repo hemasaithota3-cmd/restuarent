@@ -596,6 +596,29 @@
     gap: 12px;
   }
 }
+.search-box {
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box input {
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 20px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: var(--cream);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+  border-color: var(--fire);
+  box-shadow: 0 0 15px rgba(255,61,0,0.4);
+}
 </style>
 </head>
 <body>
@@ -723,6 +746,9 @@
 
 <!-- ── MENU ── -->
 <section id="menu">
+  <div class="search-box">
+  <input type="text" id="searchInput" placeholder="🔍 Search dishes (e.g. biryani, chicken...)">
+</div>
   <div class="reveal">
     <div class="section-tag">🍽️ Our Menu</div>
     <h2 class="section-title">Crafted with Fire & Soul</h2>
@@ -881,12 +907,17 @@ function renderMenu(items) {
   `).join('');
 }
 
+let currentCategory = "all";
+
 function filterMenu(type, btn) {
+  currentCategory = type;
+
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const filtered = type === 'all' ? menuItems : menuItems.filter(i => i.type === type);
-  renderMenu(filtered);
+
+  applyFilters();
 }
+
 
 function addToCart(name, btn) {
   btn.textContent = '✓';
@@ -919,9 +950,36 @@ function submitForm(btn) {
     btn.style.background = 'var(--fire)';
   }, 3000);
 }
+function applyFilters() {
+  const searchValue = document.getElementById("searchInput").value.toLowerCase();
+
+  let filtered = menuItems;
+
+  // Category filter
+  if (currentCategory !== "all") {
+    filtered = filtered.filter(item => item.type === currentCategory);
+  }
+
+  // Search filter
+  if (searchValue) {
+    filtered = filtered.filter(item =>
+      item.name.toLowerCase().includes(searchValue) ||
+      item.desc.toLowerCase().includes(searchValue)
+    );
+  }
+
+  // No results
+  if (filtered.length === 0) {
+    document.getElementById("menuGrid").innerHTML =
+      "<p style='text-align:center;color:gray;'>😕 No items found</p>";
+  } else {
+    renderMenu(filtered);
+  }
+}
 
 // initial render
 renderMenu(menuItems);
+document.getElementById("searchInput").addEventListener("input", applyFilters);
 
 // ── Scroll reveal ──
 const revealEls = document.querySelectorAll('.reveal');
