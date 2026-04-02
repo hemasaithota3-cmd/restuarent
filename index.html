@@ -994,19 +994,27 @@ form.addEventListener("submit", function(e) {
 
   const formData = new FormData(form);
 
-  fetch("https://formsubmit.co/hemasaithota3@gmail.com", {
+  // add extra fields
+  formData.append("_captcha", "false");
+  formData.append("_template", "table");
+  formData.append("_subject", "New Table Reservation 🍽️");
+
+  fetch("https://formsubmit.co/YOUR_EMAIL@gmail.com", {
     method: "POST",
     body: formData
   })
-  .then(() => {
-    showToast("✅ Table reserved! We will contact you.");
-    form.reset();
+  .then(res => {
+    if (res.ok) {
+      showToast("✅ Table reserved! We will contact you.");
+      form.reset();
+    } else {
+      showToast("⚠️ Try again later");
+    }
   })
   .catch(() => {
-    showToast("❌ Error! Try again.");
+    showToast("❌ Network error!");
   });
 });
-
 // ── Scroll reveal ──
 const revealEls = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
