@@ -803,6 +803,7 @@
   method="POST"
   target="hidden_iframe"
   onsubmit="handleSubmit()"
+   id="reserveForm"
 >
 
 <div class="form-row">
@@ -829,7 +830,7 @@
 
   <button type="submit" class="form-submit">Reserve My Table →</button>
 </form>
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
+  <iframe name="hidden_iframe" style="display:none;" onload="formSuccess()"></iframe>
  
 </div>
     <div class="map-wrap">
@@ -1004,19 +1005,27 @@ revealEls.forEach(el => observer.observe(el));
 const st = document.createElement('style');
 st.textContent = '@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}';
 document.head.appendChild(st);
-function handleSubmit() {
-  const btn = document.querySelector(".form-submit");
+let submitted = false;
 
+function handleSubmit() {
+  submitted = true;
+
+  const btn = document.querySelector(".form-submit");
   btn.textContent = "Booking...";
   btn.disabled = true;
+}
 
-  setTimeout(() => {
+function formSuccess() {
+  if (submitted) {
     showToast("✅ Table Reserved Successfully!");
     document.getElementById("reserveForm").reset();
 
+    const btn = document.querySelector(".form-submit");
     btn.textContent = "Reserve My Table →";
     btn.disabled = false;
-  }, 1000);
+
+    submitted = false;
+  }
 }
 </script>
 </body>
