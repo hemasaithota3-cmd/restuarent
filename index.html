@@ -987,42 +987,36 @@ function applyFilters() {
 // initial render
 renderMenu(menuItems);
 document.getElementById("searchInput").addEventListener("input", applyFilters);
+<script>
 const form = document.getElementById("reserveForm");
 
-function submitForm(btn) {
-  const name = document.querySelector('input[type="text"]').value;
-  const phone = document.querySelector('input[type="tel"]').value;
-  const date = document.querySelector('input[type="date"]').value;
-  const guests = document.querySelector('input[type="number"]').value;
-  const message = document.querySelector('textarea').value;
+form.addEventListener("submit", function(e) {
+  e.preventDefault(); // 🔥 VERY IMPORTANT (prevents redirect)
+
+  const formData = {
+    name: form.name.value,
+    phone: form.phone.value,
+    date: form.date.value,
+    guests: form.guests.value,
+    message: form.message.value
+  };
 
   fetch("https://script.google.com/macros/s/AKfycbyE4alHqIj__2Nn4m6KTyHjxwiIzqMIwmoRfzBDJ7Ue9PypOwF2_bAE0N9mSaPGMhvg0A/exec", {
     method: "POST",
-    body: JSON.stringify({
-      name: name,
-      phone: phone,
-      date: date,
-      guests: guests,
-      message: message
-    })
+    body: JSON.stringify(formData)
   })
   .then(res => res.text())
   .then(data => {
-    btn.textContent = "✓ Table Reserved!";
-    btn.style.background = "#22c55e";
+    showToast("✅ Table Reserved Successfully!");
 
-    showToast("Booking saved successfully!");
-
-    setTimeout(() => {
-      btn.textContent = "Reserve My Table →";
-      btn.style.background = "var(--fire)";
-    }, 3000);
+    form.reset(); // clear form
   })
   .catch(err => {
     showToast("❌ Failed to save booking");
     console.error(err);
   });
-}
+});
+</script>
 // ── Scroll reveal ──
 const revealEls = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
