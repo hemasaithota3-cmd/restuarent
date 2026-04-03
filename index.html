@@ -798,34 +798,28 @@
 <div class="contact-form">
   <h3>Reserve a Table</h3>
 
-  <form id="reserveForm">
+ <form 
+  action="https://script.google.com/macros/s/AKfycby1qiLqhVTp22D-erTLuDWeLjy6fs3OreZQLqc0wSUkuzR1_mterEDQsiLz3X4c7ocjFA/exec"
+  method="POST"
+  target="hidden_iframe"
+  onsubmit="showSuccess()"
+>
 
-    <div class="form-row">
-      <div class="form-field">
-        <input type="text" name="name" placeholder="Your Name" required>
-      </div>
-      <div class="form-field">
-        <input type="tel" name="phone" placeholder="Phone Number" required>
-      </div>
-    </div>
+  <div class="form-row">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="tel" name="phone" placeholder="Phone Number" required>
+  </div>
 
-    <div class="form-row">
-      <div class="form-field">
-        <input type="date" name="date" required>
-      </div>
-      <div class="form-field">
-        <input type="number" name="guests" placeholder="No. of Guests" min="1" max="20" required>
-      </div>
-    </div>
+  <div class="form-row">
+    <input type="date" name="date" required>
+    <input type="number" name="guests" placeholder="Guests" required>
+  </div>
 
-    <div class="form-field">
-      <textarea name="message" placeholder="Special requests or dietary needs..."></textarea>
-    </div>
+  <textarea name="message" placeholder="Message"></textarea>
 
-    <!-- ❌ REMOVE onclick -->
-    <button type="submit" class="form-submit">Reserve My Table →</button>
-
-  </form>
+  <button type="submit">Reserve My Table →</button>
+</form>
+ 
 </div>
     <div class="map-wrap">
       <!-- Google Maps embed for Kurnool, Andhra Pradesh -->
