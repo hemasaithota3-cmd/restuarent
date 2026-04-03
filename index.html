@@ -802,7 +802,7 @@
   action="https://script.google.com/macros/s/AKfycby1qiLqhVTp22D-erTLuDWeLjy6fs3OreZQLqc0wSUkuzR1_mterEDQsiLz3X4c7ocjFA/exec"
   method="POST"
   target="hidden_iframe"
-  onsubmit="showSuccess()"
+  onsubmit="handleSubmit()"
 >
 
 <div class="form-row">
@@ -1003,27 +1003,20 @@ revealEls.forEach(el => observer.observe(el));
 const st = document.createElement('style');
 st.textContent = '@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}';
 document.head.appendChild(st);
-const form = document.getElementById("reserveForm");
+function handleSubmit() {
+  const btn = document.querySelector(".form-submit");
 
-form.addEventListener("submit", function(e) {
-  e.preventDefault();
+  btn.textContent = "Booking...";
+  btn.disabled = true;
 
-  const formData = new FormData(form);
-
-  fetch("https://script.google.com/macros/s/AKfycby1qiLqhVTp22D-erTLuDWeLjy6fs3OreZQLqc0wSUkuzR1_mterEDQsiLz3X4c7ocjFA/exec", {
-    method: "POST",
-    body: formData
-  })
-  .then(res => res.text())
-  .then(data => {
+  setTimeout(() => {
     showToast("✅ Table Reserved Successfully!");
-    form.reset();
-  })
-  .catch(err => {
-    showToast("❌ Failed to save booking");
-    console.error(err);
-  });
-});
+    document.getElementById("reserveForm").reset();
+
+    btn.textContent = "Reserve My Table →";
+    btn.disabled = false;
+  }, 1000);
+}
 </script>
 </body>
 </html>
