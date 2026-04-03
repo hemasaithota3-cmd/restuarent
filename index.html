@@ -999,30 +999,21 @@ revealEls.forEach(el => observer.observe(el));
 const st = document.createElement('style');
 st.textContent = '@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}';
 document.head.appendChild(st);
-  const form = document.getElementById("reserveForm");
+const form = document.getElementById("reserveForm");
 
 form.addEventListener("submit", function(e) {
-  e.preventDefault(); // stop page reload
+  e.preventDefault();
 
-  const formData = {
-    name: form.name.value,
-    phone: form.phone.value,
-    date: form.date.value,
-    guests: form.guests.value,
-    message: form.message.value
-  };
+  const formData = new FormData(form);
 
   fetch("https://script.google.com/macros/s/AKfycbyE4alHqIj__2Nn4m6KTyHjxwiIzqMIwmoRfzBDJ7Ue9PypOwF2_bAE0N9mSaPGMhvg0A/exec", {
     method: "POST",
-    body: JSON.stringify(formData),
-    headers: {
-      "Content-Type": "application/json"
-    }
+    body: formData
   })
   .then(res => res.text())
   .then(data => {
     showToast("✅ Table Reserved Successfully!");
-    form.reset(); // clear form
+    form.reset();
   })
   .catch(err => {
     showToast("❌ Failed to save booking");
